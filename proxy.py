@@ -1,5 +1,10 @@
 import socket
 from threading import Thread
+import os
+
+
+def parse(data, port, origin):
+    print(f"[{origin} ({port})] {data.encode('hex')}")
 
 class Proxy2Server(Thread):
     def __init__(self, host, port):
@@ -14,7 +19,13 @@ class Proxy2Server(Thread):
         while True:
             data = self.server.recv(4096)
             if data:
-                print(f"[{self.port} -> {data[:100].encode('hex')}]")
+                try:
+                    reload(parse)
+                    parse(data, self.port, 'server')
+                except Exception as e:
+                    print(f"server[{self.port}]", e)
+                parse(data, self.port, 'server')
+                # print(f"[{self.port} -> {data[:100].encode('hex')}]")
                 # forward to client
                 self.game.sendall(data)
 
@@ -35,10 +46,15 @@ class Game2Proxy(Thread):
         while True:
             data = self.game.recv(4096)
             if data:
-                print(f"[{self.port} -> {data[:100].encode('hex')}]")
+                try:
+                    reload(parse)
+                    parse(data, self.port, 'client')
+                except Exception as e:
+                    print(f"server[{self.port}]", e)
+                parse(data, self.port, 'client')
+                # print(f"[{self.port} -> {data[:100].encode('hex')}]")
                 # forward to server
                 self.server.sendall(data)
-
 
 class Proxy(Thread):
     def __init__(self, from_host, to_host, port):
@@ -66,4 +82,12 @@ master_server.start()
 for port in range(3000, 3006):
     _game_server = Proxy('0.0.0.0', '192.168.178.54', port )
     _game_server.start()
-            
+
+
+while True:
+    try:
+        cmd = raw_input("$")
+        if cmd[:4] == 'quit':
+            os._exit()
+    except Exception as e:
+        print(e)
