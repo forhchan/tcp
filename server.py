@@ -2,12 +2,12 @@ import socket
 
 # host = socket.gethostbyname(socket.gethostname())
 
-HOST = '10.68.123.238'
+HOST = '10.68.108.93'
 PORT = 9091
 
 
 count = 0
-
+print(f"Waiting for response from client")
 while True:
     server = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
     server.bind((HOST, PORT))
