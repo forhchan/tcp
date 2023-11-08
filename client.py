@@ -1,8 +1,8 @@
 import socket
 
-HOST = '10.68.123.238'
+HOST = '192.168.0.116'
 
-PORT = 9091
+PORT = 8000
 
 while True:
     sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
