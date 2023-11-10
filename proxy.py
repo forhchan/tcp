@@ -2,8 +2,9 @@ import socket
 from threading import Thread
 
 
-def parse(data, port, origin):
-    print(f"[{origin} ({port})] {data.encode('hex')}")
+# def parse(data, port, origin):
+    # print(f"[{origin} ({port})] {data.encode('hex')}")
+
 
 
 class Proxy2Server(Thread):
@@ -79,9 +80,12 @@ class Proxy(Thread):
 master_server = Proxy('0.0.0.0', '192.168.0.250', 8009)  # real server ip 192.168...
 master_server.start()
 
-# for port in range(6400, 6500):
-#     _game_server = Proxy('192.168.100.47', '121.124.124.195', port )
+# for port in range(3000, 3006):
+#     _game_server = Proxy('0.0.0.0', '192.168.0.250', port )
 #     _game_server.start()
+
+_game_server = Proxy('0.0.0.0', '192.168.0.250', 10001 )
+_game_server.start()
 
 
 # while True:
