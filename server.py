@@ -28,7 +28,7 @@ while True:
             break
         if message == "end":
             break
-        communication_socket.send(f"Got your message! Thank you!".encode('utf-8'))
+        communication_socket.send(f"{count} : Got your message!".encode('utf-8'))
         count += 1
     communication_socket.close()
     print(f"Connection with {addr} ended!")
