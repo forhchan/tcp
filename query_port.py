@@ -1,6 +1,6 @@
 import socket
 
-def get_minecraft_server_port(server_address):
+def get_server_port(server_address):
     query_port = 25565  # Minecraft Query Protocol default port
 
     try:
@@ -24,5 +24,5 @@ def get_minecraft_server_port(server_address):
 
 # Example usage:
 server_address = 'mc.hypixel.net'
-current_port = get_minecraft_server_port(server_address)
+current_port = get_server_port(server_address)
 print(f"The current port of the Minecraft server {server_address} is {current_port}")

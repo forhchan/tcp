@@ -1,11 +1,27 @@
 import socket
 import threading
 
-def get_remote_port():
-    # 여기에서 게임 서버의 현재 포트를 동적으로 가져오는 로직을 구현합니다.
-    # 예를 들어, 게임 서버에 쿼리를 보내거나 다른 방법을 사용하여 현재 포트를 얻을 수 있습니다.
-    # 이 예제에서는 임의의 값을 반환하도록 하겠습니다.
-    return 12345
+def get_remote_port(server_ip):
+    query_port = 25565  # Minecraft Query Protocol default port
+
+    try:
+        # Connect to the server and send a Query request
+        with socket.socket(socket.AF_INET, socket.SOCK_DGRAM) as s:
+            s.settimeout(2)
+            s.connect((server_ip, query_port))
+            s.sendall(b'\xfe\xfd\x09\x00\x00\x00\x00\x00\x00\xff\xff\x00\x00\x00\x00')
+            data = s.recv(2048)
+
+        # Parse the response to get the server port
+        port_start = data.find(b'\x00\x00\x00\x00\x00\x00\x00\x00') + 8
+        port_end = data.find(b'\x00', port_start)
+        server_port = int(data[port_start:port_end])
+
+        return server_port
+
+    except Exception as e:
+        print(f"Error querying server: {e}")
+        return None
 
 def handle_client(client_socket, remote_host):
     remote_port = get_remote_port()
